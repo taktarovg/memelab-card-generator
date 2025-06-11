@@ -207,6 +207,11 @@ class CardGenerator {
             // Обычный градиент для старых схем
             this.createBackground(colorScheme);
         }
+        
+        // Добавляем специальные эффекты для редких карточек (для всех схем)
+        if (this.colorSchemes[colorScheme].gradient.length > 2) {
+            this.addSpecialEffects(rarity);
+        }
     }
     
     // Создание обычного градиентного фона
@@ -251,6 +256,164 @@ class CardGenerator {
         this.ctx.fillStyle = holoGradient;
         this.ctx.fillRect(0, 0, this.cardWidth, this.cardHeight);
         this.ctx.globalCompositeOperation = 'source-over';
+    }
+    
+    // Добавление специальных эффектов для редких карточек
+    addSpecialEffects(rarity) {
+        switch(rarity) {
+            case 'epic':
+                this.addDiscoballEffect();
+                this.addSparkleParticles();
+                break;
+            case 'legendary':
+                this.addLightningEffect();
+                this.addRainbowCascade();
+                this.addDiscoballEffect(); // Легендарные получают все эффекты
+                break;
+            case 'rare':
+                this.addSparkleParticles();
+                break;
+        }
+    }
+    
+    // Эффект диско шара 🕺
+    addDiscoballEffect() {
+        const time = (this.animationOffset || Date.now() * 0.001) * 2;
+        const centerX = this.cardWidth / 2;
+        const centerY = this.cardHeight / 2;
+        
+        // Создаем 15 пятен света разного размера
+        for (let i = 0; i < 15; i++) {
+            const angle = (time + i * 0.5) % (Math.PI * 2);
+            const radius = 100 + Math.sin(time * 2 + i) * 50;
+            
+            const x = centerX + Math.cos(angle) * radius;
+            const y = centerY + Math.sin(angle) * radius;
+            
+            // Размер пятна света
+            const size = 20 + Math.sin(time * 3 + i) * 10;
+            
+            // Цвет пятна (радужный)
+            const hue = (time * 50 + i * 30) % 360;
+            const color = `hsla(${hue}, 80%, 70%, 0.6)`;
+            
+            // Рисуем пятно света
+            this.ctx.save();
+            this.ctx.globalCompositeOperation = 'screen';
+            
+            const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, size);
+            gradient.addColorStop(0, color);
+            gradient.addColorStop(0.7, color.replace('0.6', '0.2'));
+            gradient.addColorStop(1, 'transparent');
+            
+            this.ctx.fillStyle = gradient;
+            this.ctx.beginPath();
+            this.ctx.arc(x, y, size, 0, Math.PI * 2);
+            this.ctx.fill();
+            
+            this.ctx.restore();
+        }
+    }
+    
+    // Эффект мерцающих звездочек ✨
+    addSparkleParticles() {
+        const time = (this.animationOffset || Date.now() * 0.001) * 3;
+        
+        // Создаем 25 мерцающих звездочек
+        for (let i = 0; i < 25; i++) {
+            const x = (i * 157) % this.cardWidth; // Псевдослучайное распределение
+            const y = (i * 211) % this.cardHeight;
+            
+            // Мерцание с разной частотой
+            const opacity = (Math.sin(time * 2 + i * 0.5) + 1) / 2;
+            const size = 2 + Math.sin(time + i) * 1;
+            
+            if (opacity > 0.3) { // Показываем только яркие звездочки
+                this.ctx.save();
+                this.ctx.globalCompositeOperation = 'screen';
+                
+                // Рисуем звездочку как 4-лучевую звезду
+                this.ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+                this.ctx.lineWidth = 1;
+                this.ctx.lineCap = 'round';
+                
+                // Горизонтальная линия
+                this.ctx.beginPath();
+                this.ctx.moveTo(x - size, y);
+                this.ctx.lineTo(x + size, y);
+                this.ctx.stroke();
+                
+                // Вертикальная линия
+                this.ctx.beginPath();
+                this.ctx.moveTo(x, y - size);
+                this.ctx.lineTo(x, y + size);
+                this.ctx.stroke();
+                
+                this.ctx.restore();
+            }
+        }
+    }
+    
+    // Эффект молний для Legendary ⚡
+    addLightningEffect() {
+        const time = (this.animationOffset || Date.now() * 0.001) * 4;
+        
+        // Создаем случайные вспышки молний
+        for (let i = 0; i < 5; i++) {
+            const flashTiming = (time + i * 2) % 6;
+            
+            if (flashTiming < 0.2) { // Короткая вспышка
+                const x1 = (i * 123) % this.cardWidth;
+                const y1 = 0;
+                const x2 = ((i + 3) * 234) % this.cardWidth;
+                const y2 = this.cardHeight;
+                
+                this.ctx.save();
+                this.ctx.globalCompositeOperation = 'screen';
+                this.ctx.strokeStyle = `rgba(255, 255, 255, ${0.8 - flashTiming * 4})`;
+                this.ctx.lineWidth = 3;
+                this.ctx.shadowColor = '#00FFFF';
+                this.ctx.shadowBlur = 10;
+                
+                // Рисуем зигзагообразную молнию
+                this.ctx.beginPath();
+                this.ctx.moveTo(x1, y1);
+                
+                const steps = 8;
+                for (let s = 1; s <= steps; s++) {
+                    const segmentY = (y2 - y1) * (s / steps) + y1;
+                    const segmentX = x1 + (x2 - x1) * (s / steps) + (Math.sin(s * 2) * 30);
+                    this.ctx.lineTo(segmentX, segmentY);
+                }
+                
+                this.ctx.stroke();
+                this.ctx.restore();
+            }
+        }
+    }
+    
+    // Эффект радужного водопада 🌈
+    addRainbowCascade() {
+        const time = (this.animationOffset || Date.now() * 0.001) * 2;
+        
+        // Создаем падающие радужные полосы
+        for (let i = 0; i < 8; i++) {
+            const x = i * (this.cardWidth / 8) + (time * 50) % this.cardWidth;
+            const hue = (time * 60 + i * 45) % 360;
+            
+            this.ctx.save();
+            this.ctx.globalCompositeOperation = 'screen';
+            
+            const gradient = this.ctx.createLinearGradient(x, 0, x + 30, 0);
+            gradient.addColorStop(0, 'transparent');
+            gradient.addColorStop(0.5, `hsla(${hue}, 80%, 60%, 0.3)`);
+            gradient.addColorStop(1, 'transparent');
+            
+            this.ctx.fillStyle = gradient;
+            this.ctx.fillRect(x - 15, 0, 30, this.cardHeight);
+            
+            this.ctx.restore();
+        }
     }
     
     // 3D рамка с metallic эффектами (NFT-стиль)
@@ -986,6 +1149,322 @@ function generateARPreview() {
             document.body.removeChild(modal);
         }
     };
+}
+
+function exportGIF() {
+    const rarity = document.getElementById('cardRarity').value;
+    const name = document.getElementById('cardName').value || 'card';
+    
+    // Проверяем, что карточка достойна анимации
+    if (rarity === 'common') {
+        alert('🚫 GIF экспорт доступен только для Rare+ карточек!');
+        return;
+    }
+    
+    // Показываем модальное окно с опциями экспорта
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    `;
+    
+    const content = document.createElement('div');
+    content.style.cssText = `
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 400px;
+        color: white;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    `;
+    
+    content.innerHTML = `
+        <h2 style="margin: 0 0 20px 0; font-size: 24px;">🎆 GIF Экспорт</h2>
+        <p style="margin-bottom: 25px; opacity: 0.9;">Выберите формат анимированного экспорта:</p>
+        
+        <div style="display: grid; gap: 15px; margin-bottom: 25px;">
+            <button id="gifZip" style="
+                padding: 15px;
+                background: rgba(255,255,255,0.2);
+                border: 2px solid rgba(255,255,255,0.3);
+                border-radius: 10px;
+                color: white;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-size: 16px;
+            ">
+                🗄️ ZIP с 30 кадрами PNG<br>
+                <small style="opacity: 0.8;">Лучшее качество, можно собрать GIF в Photoshop</small>
+            </button>
+            
+            <button id="webmVideo" style="
+                padding: 15px;
+                background: rgba(255,255,255,0.2);
+                border: 2px solid rgba(255,255,255,0.3);
+                border-radius: 10px;
+                color: white;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-size: 16px;
+            ">
+                🎥 WebM видео<br>
+                <small style="opacity: 0.8;">Маленький размер, идеально для соцсетей</small>
+            </button>
+            
+            <button id="htmlPreview" style="
+                padding: 15px;
+                background: rgba(255,255,255,0.2);
+                border: 2px solid rgba(255,255,255,0.3);
+                border-radius: 10px;
+                color: white;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-size: 16px;
+            ">
+                🌐 HTML Превью<br>
+                <small style="opacity: 0.8;">Посмотреть анимацию в браузере</small>
+            </button>
+        </div>
+        
+        <button id="closeGifModal" style="
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+        ">Закрыть</button>
+    `;
+    
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+    
+    // Обработчики кнопок
+    document.getElementById('gifZip').onclick = () => {
+        document.body.removeChild(modal);
+        exportFramesAsZip(name);
+    };
+    
+    document.getElementById('webmVideo').onclick = () => {
+        document.body.removeChild(modal);
+        exportAsWebM(name);
+    };
+    
+    document.getElementById('htmlPreview').onclick = () => {
+        document.body.removeChild(modal);
+        cardGenerator.exportAnimatedCard(); // Показываем существующее превью
+    };
+    
+    document.getElementById('closeGifModal').onclick = () => {
+        document.body.removeChild(modal);
+    };
+    
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            document.body.removeChild(modal);
+        }
+    };
+}
+
+// Экспорт кадров как ZIP архив
+function exportFramesAsZip(cardName) {
+    const progressDiv = createProgressModal('Генерируем 30 кадров анимации...');
+    
+    setTimeout(async () => {
+        const frames = [];
+        const totalFrames = 30;
+        
+        // Генерируем кадры
+        for (let frame = 0; frame < totalFrames; frame++) {
+            cardGenerator.generateFrameWithAnimation(frame, totalFrames);
+            
+            // Конвертируем canvas в blob
+            const dataUrl = cardGenerator.canvas.toDataURL('image/png');
+            frames.push({
+                name: `frame_${String(frame).padStart(3, '0')}.png`,
+                data: dataUrl
+            });
+            
+            // Обновляем прогресс
+            updateProgress(progressDiv, (frame + 1) / totalFrames * 100);
+            
+            // Пауза для отзывчивости UI
+            await new Promise(resolve => setTimeout(resolve, 50));
+        }
+        
+        // Создаем ссылки для скачивания
+        const downloadLinks = document.createElement('div');
+        downloadLinks.style.cssText = 'margin-top: 20px;';
+        
+        frames.forEach((frame, index) => {
+            const link = document.createElement('a');
+            link.href = frame.data;
+            link.download = frame.name;
+            link.textContent = `Кадр ${index + 1}`;
+            link.style.cssText = `
+                display: inline-block;
+                margin: 5px;
+                padding: 8px 12px;
+                background: #667eea;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 12px;
+            `;
+            downloadLinks.appendChild(link);
+        });
+        
+        const downloadAllBtn = document.createElement('button');
+        downloadAllBtn.textContent = '💾 Скачать все кадры';
+        downloadAllBtn.style.cssText = `
+            width: 100%;
+            padding: 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 15px;
+            cursor: pointer;
+        `;
+        
+        downloadAllBtn.onclick = () => {
+            frames.forEach((frame, index) => {
+                setTimeout(() => {
+                    const link = document.createElement('a');
+                    link.href = frame.data;
+                    link.download = `${cardName}_${frame.name}`;
+                    link.click();
+                }, index * 100); // Задержка между скачиваниями
+            });
+        };
+        
+        updateProgressContent(progressDiv, `
+            <h3>✅ 30 кадров готово!</h3>
+            <p>Для создания GIF:</p>
+            <ol style="text-align: left; margin: 15px 0; padding-left: 20px;">
+                <li>Скачайте все кадры</li>
+                <li>Откройте Photoshop или GIMP</li>
+                <li>Импортируйте как Image Sequence</li>
+                <li>Экспортируйте как Animated GIF</li>
+            </ol>
+        `);
+        
+        progressDiv.appendChild(downloadAllBtn);
+        progressDiv.appendChild(downloadLinks);
+        
+    }, 100);
+}
+
+// Экспорт как WebM видео
+function exportAsWebM(cardName) {
+    const progressDiv = createProgressModal('Создаем WebM видео...');
+    
+    // Имитация создания видео (требует MediaRecorder API)
+    setTimeout(() => {
+        updateProgressContent(progressDiv, `
+            <h3>🚧 WebM экспорт в разработке</h3>
+            <p>Пока что используйте:</p>
+            <ol style="text-align: left; margin: 15px 0; padding-left: 20px;">
+                <li>🗄️ ZIP с кадрами для Photoshop</li>
+                <li>🌐 HTML превью для просмотра</li>
+                <li>📱 Запись экрана через OBS</li>
+            </ol>
+            <p><small>Полноценный видео экспорт появится в следующем обновлении!</small></p>
+        `);
+    }, 1000);
+}
+
+// Вспомогательные функции для прогресс-бара
+function createProgressModal(title) {
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    `;
+    
+    const content = document.createElement('div');
+    content.style.cssText = `
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        min-width: 400px;
+        max-width: 600px;
+    `;
+    
+    content.innerHTML = `
+        <h3 style="margin: 0 0 20px 0;">${title}</h3>
+        <div style="
+            width: 100%;
+            height: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        ">
+            <div id="progressBar" style="
+                height: 100%;
+                background: linear-gradient(90deg, #667eea, #764ba2);
+                width: 0%;
+                transition: width 0.3s ease;
+            "></div>
+        </div>
+        <div id="progressText">0%</div>
+        <button onclick="document.body.removeChild(this.closest('.modal') || this.parentElement.parentElement)" style="
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        ">Отмена</button>
+    `;
+    
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+    return modal;
+}
+
+function updateProgress(modal, percent) {
+    const progressBar = modal.querySelector('#progressBar');
+    const progressText = modal.querySelector('#progressText');
+    
+    progressBar.style.width = percent + '%';
+    progressText.textContent = Math.round(percent) + '%';
+}
+
+function updateProgressContent(modal, newContent) {
+    const content = modal.querySelector('div');
+    content.innerHTML = newContent + `
+        <button onclick="document.body.removeChild(this.closest('.modal') || this.parentElement.parentElement)" style="
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        ">Закрыть</button>
+    `;
 }
 
 function clearAll() {
