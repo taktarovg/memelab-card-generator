@@ -223,10 +223,10 @@ class CardGenerator {
     // Добавление голографического оверлея
     addHolographicOverlay(rarity) {
         const intensity = {
-            common: 0.1,
-            rare: 0.3,
-            epic: 0.5,
-            legendary: 0.8
+            common: 0.15,
+            rare: 0.4,
+            epic: 0.7,
+            legendary: 1.0
         }[rarity];
         
         // Используем animationOffset для движущихся отражений
