@@ -1,0 +1,203 @@
+{
+  "collections": {
+    "labubu_meme_lab": {
+      "name": "Labubu Meme Lab",
+      "description": "Первая коллекция MEMELAB с трендовыми персонажами Labubu",
+      "cards": [
+        {
+          "id": "L001",
+          "name": "Labubu Blackpink Lisa",
+          "rarity": "legendary",
+          "memePower": 10000,
+          "virality": 3,
+          "description": "Историческая карточка - момент когда Лиса из Blackpink сделала Лабубу мировым трендом",
+          "colorScheme": "pink_purple",
+          "category": "celebrity"
+        },
+        {
+          "id": "E001",
+          "name": "Labubu Original Creator",
+          "rarity": "epic",
+          "memePower": 8500,
+          "virality": 2,
+          "description": "Первый в истории Лабубу от Kasing Lung",
+          "colorScheme": "gold_yellow",
+          "category": "original"
+        },
+        {
+          "id": "E002",
+          "name": "Labubu Russian Зимний",
+          "rarity": "epic", 
+          "memePower": 8000,
+          "virality": 2,
+          "description": "Лабубу в ушанке с балалайкой и матрешкой",
+          "colorScheme": "blue_cyan",
+          "category": "cultural"
+        },
+        {
+          "id": "E003",
+          "name": "Labubu Crypto King",
+          "rarity": "epic",
+          "memePower": 7800,
+          "virality": 2,
+          "description": "Лабубу с золотыми зубами и цепями из биткоинов",
+          "colorScheme": "gold_yellow",
+          "category": "crypto"
+        },
+        {
+          "id": "E004",
+          "name": "Labubu TikTok Dance",
+          "rarity": "epic",
+          "memePower": 8200,
+          "virality": 2,
+          "description": "Лабубу исполняет вирусный танец",
+          "colorScheme": "pink_purple",
+          "category": "social"
+        },
+        {
+          "id": "R001",
+          "name": "Labubu Программист",
+          "rarity": "rare",
+          "memePower": 6000,
+          "virality": 1,
+          "description": "Лабубу за компьютером с кодом",
+          "colorScheme": "blue_cyan",
+          "category": "profession"
+        },
+        {
+          "id": "R002",
+          "name": "Labubu Доктор",
+          "rarity": "rare",
+          "memePower": 5800,
+          "virality": 1,
+          "description": "Лабубу в медицинском халате",
+          "colorScheme": "green_mint",
+          "category": "profession"
+        },
+        {
+          "id": "R003",
+          "name": "Labubu Учитель",
+          "rarity": "rare",
+          "memePower": 5500,
+          "virality": 1,
+          "description": "Лабубу у доски с указкой",
+          "colorScheme": "green_mint",
+          "category": "profession"
+        },
+        {
+          "id": "R004",
+          "name": "Labubu Повар",
+          "rarity": "rare",
+          "memePower": 5900,
+          "virality": 1,
+          "description": "Лабубу в поварском колпаке",
+          "colorScheme": "gold_yellow",
+          "category": "profession"
+        },
+        {
+          "id": "R005",
+          "name": "Labubu Блогер",
+          "rarity": "rare",
+          "memePower": 6200,
+          "virality": 1,
+          "description": "Лабубу со смартфоном и селфи-палкой",
+          "colorScheme": "pink_purple",
+          "category": "profession"
+        }
+      ]
+    }
+  },
+  
+  "templates": {
+    "rarity_effects": {
+      "common": {
+        "borderWidth": 4,
+        "borderColor": "#9E9E9E",
+        "glowIntensity": 0,
+        "sparkles": false
+      },
+      "rare": {
+        "borderWidth": 6,
+        "borderColor": "#2196F3", 
+        "glowIntensity": 10,
+        "sparkles": true
+      },
+      "epic": {
+        "borderWidth": 8,
+        "borderColor": "#9C27B0",
+        "glowIntensity": 15,
+        "sparkles": true,
+        "animation": "pulse"
+      },
+      "legendary": {
+        "borderWidth": 10,
+        "borderColor": "#FFD700",
+        "glowIntensity": 25,
+        "sparkles": true,
+        "animation": "rainbow"
+      }
+    },
+    
+    "color_schemes": {
+      "pink_purple": {
+        "name": "Розово-фиолетовая",
+        "gradient": ["#FF69B4", "#8B66CC"],
+        "text": "#FFFFFF",
+        "accent": "#FFD700"
+      },
+      "blue_cyan": {
+        "name": "Сине-голубая", 
+        "gradient": ["#4FC3F7", "#29B6F6"],
+        "text": "#FFFFFF",
+        "accent": "#00E676"
+      },
+      "gold_yellow": {
+        "name": "Золотисто-желтая",
+        "gradient": ["#FFD700", "#FFA000"],
+        "text": "#000000",
+        "accent": "#FF5722"
+      },
+      "green_mint": {
+        "name": "Зелено-мятная",
+        "gradient": ["#4CAF50", "#26A69A"],
+        "text": "#FFFFFF", 
+        "accent": "#FFC107"
+      }
+    }
+  },
+  
+  "batch_configs": {
+    "demo_set": [
+      {
+        "name": "Labubu Classic Demo",
+        "rarity": "common",
+        "memePower": 3000,
+        "description": "Демо карточка классического Лабубу",
+        "colorScheme": "pink_purple"
+      },
+      {
+        "name": "Labubu Rare Demo", 
+        "rarity": "rare",
+        "memePower": 6000,
+        "description": "Демо карточка редкого Лабубу",
+        "colorScheme": "blue_cyan"
+      },
+      {
+        "name": "Labubu Epic Demo",
+        "rarity": "epic", 
+        "memePower": 8000,
+        "description": "Демо карточка эпичного Лабубу",
+        "colorScheme": "gold_yellow"
+      },
+      {
+        "name": "Labubu Legendary Demo",
+        "rarity": "legendary",
+        "memePower": 10000,
+        "description": "Демо карточка легендарного Лабубу",
+        "colorScheme": "pink_purple"
+      }
+    ],
+    
+    "full_collection": "Import from labubu_collection.csv"
+  }
+}

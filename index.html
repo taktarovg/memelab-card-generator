@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEMELAB Card Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .controls {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+        
+        .canvas-container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        #cardCanvas {
+            border: 2px solid #ddd;
+            max-width: 100%;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .generated-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .generated-card img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .rarity-legendary { border: 3px solid gold; }
+        .rarity-epic { border: 3px solid purple; }
+        .rarity-rare { border: 3px solid blue; }
+        .rarity-common { border: 3px solid gray; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧪 MEMELAB Card Generator</h1>
+        <p>Программный генератор коллекционных карточек</p>
+    </div>
+
+    <div class="controls">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            
+            <div class="control-group">
+                <label>Название карточки:</label>
+                <input type="text" id="cardName" value="Labubu Classic" placeholder="Введите название">
+            </div>
+
+            <div class="control-group">
+                <label>Редкость:</label>
+                <select id="cardRarity">
+                    <option value="common">Common</option>
+                    <option value="rare">Rare</option>
+                    <option value="epic">Epic</option>
+                    <option value="legendary">Legendary</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>Мем-сила:</label>
+                <input type="number" id="memePower" value="3000" min="1000" max="10000">
+            </div>
+
+            <div class="control-group">
+                <label>Описание:</label>
+                <textarea id="cardDescription" rows="2" placeholder="Описание карточки">Классический Лабубу в милом стиле</textarea>
+            </div>
+
+            <div class="control-group">
+                <label>Изображение персонажа:</label>
+                <input type="file" id="characterImage" accept="image/*">
+            </div>
+
+            <div class="control-group">
+                <label>Цветовая схема:</label>
+                <select id="colorScheme">
+                    <option value="pink_purple">Розово-фиолетовая</option>
+                    <option value="blue_cyan">Сине-голубая</option>
+                    <option value="gold_yellow">Золотисто-желтая</option>
+                    <option value="green_mint">Зелено-мятная</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="generateCard()">🎨 Сгенерировать карточку</button>
+            <button onclick="generateBatch()">⚡ Массовая генерация</button>
+            <button onclick="downloadCard()">💾 Скачать карточку</button>
+            <button onclick="clearAll()">🗑️ Очистить все</button>
+        </div>
+    </div>
+
+    <div class="canvas-container">
+        <canvas id="cardCanvas" width="630" height="880"></canvas>
+    </div>
+
+    <div id="generatedCards" class="card-grid"></div>
+
+    <script src="cardGenerator.js"></script>
+</body>
+</html>
