@@ -162,6 +162,38 @@
         "gradient": ["#4CAF50", "#26A69A"],
         "text": "#FFFFFF", 
         "accent": "#FFC107"
+      },
+      "nft_holographic": {
+        "name": "🌈 NFT Голографическая",
+        "gradient": ["#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4"],
+        "text": "#FFFFFF",
+        "accent": "#FFD93D",
+        "metallic": "#C0C0C0",
+        "style": "nft"
+      },
+      "crypto_gold": {
+        "name": "💰 Криптозолото",
+        "gradient": ["#F7931E", "#FFD700", "#FFA500"],
+        "text": "#000000",
+        "accent": "#FF4500",
+        "metallic": "#DAA520",
+        "style": "nft"
+      },
+      "cyber_neon": {
+        "name": "⚡ Киберпанк неон",
+        "gradient": ["#FF00FF", "#00FFFF", "#FF1493"],
+        "text": "#FFFFFF",
+        "accent": "#00FF00",
+        "metallic": "#8A2BE2",
+        "style": "nft"
+      },
+      "galaxy_rare": {
+        "name": "🌌 Галактическая редкость",
+        "gradient": ["#1e3c72", "#2a5298", "#6a11cb", "#2575fc"],
+        "text": "#FFFFFF",
+        "accent": "#FFD700",
+        "metallic": "#4B0082",
+        "style": "nft"
       }
     }
   },
@@ -199,5 +231,45 @@
     ],
     
     "full_collection": "Import from labubu_collection.csv"
+  },
+  
+  "new_features_2025": {
+    "holographic_effects": {
+      "enabled": true,
+      "animation_frames": 30,
+      "animation_speed": 100,
+      "supported_rarities": ["rare", "epic", "legendary"]
+    },
+    "interactive_canvas": {
+      "mouse_tracking": true,
+      "3d_rotation": true,
+      "hover_effects": true,
+      "brightness_enhancement": true
+    },
+    "export_formats": {
+      "png": {
+        "enabled": true,
+        "resolution": "630x880"
+      },
+      "animated_preview": {
+        "enabled": true,
+        "format": "sequence",
+        "frames": 30,
+        "fps": 10
+      },
+      "ar_ready": {
+        "enabled": true,
+        "resolution": "1024x1024",
+        "format": "png"
+      }
+    },
+    "nft_style_features": {
+      "metallic_borders": true,
+      "holographic_overlay": true,
+      "3d_text_effects": true,
+      "progressive_blur": true,
+      "rainbow_gradients": true,
+      "dynamic_reflections": true
+    }
   }
 }

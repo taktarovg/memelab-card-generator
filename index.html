@@ -5,99 +5,259 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MEMELAB Card Generator</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Orbitron', Arial, sans-serif;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+            background-attachment: fixed;
             color: white;
+            min-height: 100vh;
         }
         
         .header {
             text-align: center;
             margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255,255,255,0.5);
+            margin: 0;
         }
         
         .controls {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .controls::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .control-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            position: relative;
         }
         
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #FFD93D;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         input, select, textarea {
             width: 100%;
-            padding: 8px;
-            border: none;
-            border-radius: 4px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            color: white;
             font-size: 14px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102,126,234,0.3);
+            outline: none;
+            background: rgba(255,255,255,0.15);
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: rgba(255,255,255,0.6);
         }
         
         button {
-            background: #4CAF50;
-            color: white;
-            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
-            border-radius: 6px;
+            border-radius: 15px;
+            padding: 15px 30px;
+            color: white;
+            font-weight: bold;
             cursor: pointer;
             font-size: 16px;
             margin: 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.3);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
         }
         
         button:hover {
-            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4);
         }
         
         .canvas-container {
             text-align: center;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 20px;
             margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
         
         #cardCanvas {
-            border: 2px solid #ddd;
+            border-radius: 20px;
             max-width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        #cardCanvas:hover {
+            transform: scale(1.02) rotateX(5deg);
         }
         
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
         }
         
         .generated-card {
-            background: white;
-            border-radius: 8px;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .generated-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
         
         .generated-card img {
             width: 100%;
             height: auto;
+            transition: transform 0.3s ease;
         }
         
-        .rarity-legendary { border: 3px solid gold; }
-        .rarity-epic { border: 3px solid purple; }
-        .rarity-rare { border: 3px solid blue; }
-        .rarity-common { border: 3px solid gray; }
+        .generated-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .generated-card > div {
+            padding: 15px;
+            color: white;
+        }
+        
+        .rarity-legendary { 
+            border: 3px solid #FFD700;
+            box-shadow: 0 0 30px rgba(255,215,0,0.5);
+            animation: legendary-glow 2s ease-in-out infinite alternate;
+        }
+        
+        .rarity-epic { 
+            border: 3px solid #9C27B0;
+            box-shadow: 0 0 20px rgba(156,39,176,0.4);
+        }
+        
+        .rarity-rare { 
+            border: 3px solid #2196F3;
+            box-shadow: 0 0 15px rgba(33,150,243,0.3);
+        }
+        
+        .rarity-common { 
+            border: 3px solid #9E9E9E;
+        }
+        
+        @keyframes legendary-glow {
+            from { box-shadow: 0 0 30px rgba(255,215,0,0.5); }
+            to { box-shadow: 0 0 50px rgba(255,215,0,0.8); }
+        }
+        
+        /* Floating particles animation */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            50% { transform: translateY(-100px) rotate(180deg); opacity: 0.5; }
+        }
     </style>
 </head>
 <body>
+    <!-- Floating particles background -->
+    <div class="particles" id="particles"></div>
+    
     <div class="header">
         <h1>🧪 MEMELAB Card Generator</h1>
         <p>Программный генератор коллекционных карточек</p>
@@ -143,6 +303,10 @@
                     <option value="blue_cyan">Сине-голубая</option>
                     <option value="gold_yellow">Золотисто-желтая</option>
                     <option value="green_mint">Зелено-мятная</option>
+                    <option value="nft_holographic">🌈 NFT Голографическая</option>
+                    <option value="crypto_gold">💰 Криптозолото</option>
+                    <option value="cyber_neon">⚡ Киберпанк неон</option>
+                    <option value="galaxy_rare">🌌 Галактическая редкость</option>
                 </select>
             </div>
         </div>
@@ -150,7 +314,9 @@
         <div style="text-align: center; margin-top: 20px;">
             <button onclick="generateCard()">🎨 Сгенерировать карточку</button>
             <button onclick="generateBatch()">⚡ Массовая генерация</button>
-            <button onclick="downloadCard()">💾 Скачать карточку</button>
+            <button onclick="downloadCard()">💾 Скачать PNG</button>
+            <button onclick="exportAnimatedCard()">🎬 Анимированная версия</button>
+            <button onclick="generateARPreview()">🔮 AR Preview</button>
             <button onclick="clearAll()">🗑️ Очистить все</button>
         </div>
     </div>
@@ -162,5 +328,34 @@
     <div id="generatedCards" class="card-grid"></div>
 
     <script src="cardGenerator.js"></script>
+    
+    <!-- Скрипт для плавающих частиц -->
+    <script>
+        // Создаем плавающие частицы
+        function createFloatingParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Случайная позиция
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                // Случайная задержка анимации
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Запускаем при загрузке страницы
+        window.addEventListener('DOMContentLoaded', () => {
+            createFloatingParticles();
+        });
+    </script>
 </body>
 </html>
